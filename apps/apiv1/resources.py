@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from tastypie import fields
 from tastypie.bundle import Bundle
@@ -19,7 +20,8 @@ from tastypie.resources import ModelResource
 class BaseResource(ModelResource):
     
     def determine_format(self, *args, **kwargs):
-        
+        if settings.DEBUG:
+            return "text/javascript"
         return "application/json"
 
 class EnhancedModelResource(BaseResource):
