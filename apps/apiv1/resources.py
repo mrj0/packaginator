@@ -10,7 +10,7 @@ from tastypie.resources import ModelResource
 from django.conf.urls.defaults import url
 from grid.models import Grid
 from homepage.models import Dpotw, Gotw
-from package.models import Package, Category
+from package.models import Package, Category, Version
 from tastypie import fields
 from tastypie.resources import ModelResource
 
@@ -74,7 +74,7 @@ class PackageResourceBase(EnhancedModelResource):
         allowed_methods = ['get']
         include_absolute_url = True
         lookup_field = 'slug'
-        
+
 class GridResource(EnhancedModelResource):
     
     packages = fields.ToManyField(PackageResourceBase, "packages")
@@ -118,6 +118,48 @@ class GridResource(EnhancedModelResource):
         return self.create_response(request, object_list)
 
 
+class VersionResource(EnhancedModelResource):
+    package = fields.ForeignKey(PackageResourceBase, 'package')
+
+    class Meta:
+        queryset = Version.objects.all()
+        resource_name = 'version'
+        allowed_methods = ['get']
+        lookup_field = 'package'
+        fields = ['number', 'downloads', 'license']
+
+    def override_urls(self):
+        return [
+            url(
+                r"^versions/(?P<package>[-\w]+)/",
+                self.get_versions,
+                name='api_package_versions',
+            ),
+        ]
+
+    def get_versions(self, request, **kwargs):
+        """
+        Returns a serialized list of resources based on the identifiers
+        from the URL.
+        
+        Calls ``obj_get`` to fetch only the objects requested. This method
+        only responds to HTTP GET.
+        
+        Should return a HttpResponse (200 OK).
+        """
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        pack = Package.objects.filter(slug=kwargs['package'])
+        versions = Version.objects.filter(package=pack)
+        version = VersionResource()
+        object_list = [version.full_dehydrate(obj) for obj in versions]
+        
+        self.log_throttled_access(request)
+        return self.create_response(request, object_list)
+
+
 class DpotwResource(ModelResource):
 
     class Meta:
@@ -156,7 +198,7 @@ class UserResource(EnhancedModelResource):
         allowed_methods = ['get']
         lookup_field = 'username'        
         fields = ["resource_uri", "last_login", "username", "date_joined"]
-        
+
 
 class PackageResource(PackageResourceBase):
 
@@ -174,4 +216,3 @@ class PackageResource(PackageResourceBase):
         allowed_methods = ['get']
         include_absolute_url = True
         lookup_field = 'slug'
-        
