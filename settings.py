@@ -186,6 +186,7 @@ PREREQ_APPS = [
     "reversion",
     "django_sorting",
     "flatblocks",
+    "djangorestframework",
     
     # Pinax
     "pinax.apps.account",
