@@ -21,6 +21,7 @@ django-flatblocks==0.5.0
 feedparser==5.0.1
 psycopg2==2.4
 django-classy-tags==0.3.3.1
+djangorestframework==0.1
 
 # Celery dependencies:
 celery==2.2.4

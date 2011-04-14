@@ -69,6 +69,7 @@ v1_api.register(DpotwResource())
 v1_api.register(UserResource())
 
 urlpatterns += patterns('',
+    url(r"^api/v2/", include("apps.apiv2.urls")),
     url(r"^api/", include(v1_api.urls)), 
 )
 
