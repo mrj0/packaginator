@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-from apps.apiv2.views import (PackageResource,
+from apps.apiv2.views import (PackageRootResource, PackageResource,
                               CategoryRootResource, CategoryResource,
                               GridRootResource, GridResource,
                               GridPackageRootResource,
@@ -8,6 +8,8 @@ from apps.apiv2.views import (PackageResource,
 
 urlpatterns = patterns(
     'modelresourceexample.views',
+
+    url(r'^package/$', PackageRootResource.as_view(), name='api2-package-root-resource'),
     url(r'^package/(?P<slug>[-\w]+)/$', PackageResource.as_view(), name='api2-package-resource'),
 
     url(r'^category/$', CategoryRootResource.as_view(), name='api2-category-root-resource'),
@@ -16,7 +18,7 @@ urlpatterns = patterns(
     url(r'^grid/$', GridRootResource.as_view(), name='api2-grid-root-resource'),
     url(r'^grid/(?P<slug>[-\w]+)/$', GridResource.as_view(), name='api2-grid-resource'),
 
-    url(r'^grid/(?P<slug>[-\w]+)/packages/$', GridPackageRootResource.as_view(), name='api2-grid-resource'),
+    url(r'^grid/(?P<slug>[-\w]+)/packages/$', GridPackageRootResource.as_view(), name='api2-grid-packages-resource'),
 
     url(r'^package-of-the-week/$', DpotwResource.as_view(), name='api2-dpotw-resource'),
 
