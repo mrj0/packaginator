@@ -44,12 +44,10 @@ URI                                             Resource                Methods
 /`grid`_/                                       Grid list               GET
 /`grid`_/{slug}/                                Grid                    GET
 /`grid`_/{slug}`/packages`_/                    Grid Packages list      GET
-/`grid-of-the-week`_/                           Featured Grid list      GET
-/`grid-of-the-week`_/{slug}/                    Featured Grid           GET
+/`grid-of-the-week`_/                           Featured Grid           GET
 /`package`_/                                    Package list            GET
 /`package`_/{slug}/                             Package                 GET
-/`package-of-the-week`_/                        Featured Package list   GET
-/`package-of-the-week`_/{slug}/                 Featured Package        GET
+/`package-of-the-week`_/                        Featured Package        GET
 ==============================================  ======================= ==================
 
 Resources
